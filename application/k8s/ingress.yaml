@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+
+kind: Ingress
+
+metadata:
+  name: enterprise-flask
+
+spec:
+  ingressClassName: nginx
+
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+
+        backend:
+          service:
+            name: enterprise-flask
+            port:
+              number: 80

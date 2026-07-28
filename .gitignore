@@ -1,0 +1,34 @@
+# Terraform
+**/.terraform/*
+**/.terraform/**
+
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+
+# Terraform overrides
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Keep lock file
+!.terraform.lock.hcl
+
+# Variable files
+*.auto.tfvars
+
+# VS Code
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+
+# Windows
+Thumbs.db
+Desktop.ini
