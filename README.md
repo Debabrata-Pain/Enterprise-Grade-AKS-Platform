@@ -32,8 +32,6 @@ The project focuses on modularity, scalability, security, automation, and produc
 
 ![Architecture](docs/architecture.png)
 
-![Architecture](docs/deplloyment-flow.png)
-
 The platform consists of:
 
 - Azure Kubernetes Service (AKS)
