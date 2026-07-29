@@ -30,7 +30,9 @@ The project focuses on modularity, scalability, security, automation, and produc
 
 > Enterprise AKS Platform Architecture
 
-![Architecture](docs/deployment-flow.png)
+![Architecture](docs/architecture.png)
+
+![Architecture](docs/deplloyment-flow.png)
 
 The platform consists of:
 
