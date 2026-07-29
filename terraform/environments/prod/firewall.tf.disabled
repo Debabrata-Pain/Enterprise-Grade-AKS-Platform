@@ -1,31 +1,26 @@
 module "firewall_policy" {
+  count = var.deploy_firewall ? 1 : 0
 
   source = "../../modules/firewall-policy"
 
-  name = "${var.environment}-firewall-policy"
-
-  location = var.location
-
+  name                = "${var.environment}-firewall-policy"
+  location            = var.location
   resource_group_name = module.network_rg.resource_group_name
 
   tags = local.common_tags
-
 }
 
 module "firewall" {
+  count = var.deploy_firewall ? 1 : 0
 
   source = "../../modules/firewall"
 
-  name = "${var.environment}-firewall"
-
-  location = var.location
-
+  name                = "${var.environment}-firewall"
+  location            = var.location
   resource_group_name = module.network_rg.resource_group_name
 
-  subnet_id = module.firewall_subnet.id
-
-  firewall_policy_id = module.firewall_policy.id
+  subnet_id          = module.firewall_subnet.id
+  firewall_policy_id = module.firewall_policy[0].id
 
   tags = local.common_tags
-
 }
