@@ -331,84 +331,71 @@ Azure | Terraform | Kubernetes | Docker | Azure DevOps
 ![Resource Groups](docs/screenshots/01-resource-groups.png)
 ---
 
-### AKS Cluster
+### Hub-Spoke-Network
 
-![AKS Overview](docs/screenshots/02-hub-spoke-network.png)
+![Hub-Spoke-Network](docs/screenshots/02-hub-spoke-network.png)
 ---
 
 ### AKS Cluster
 
-(AKS Overview)
-!(docs/screenshots/03-aks-cluster-overview.png)
+![AKS Overview](docs/screenshots/03-aks-cluster-overview.png)
 ---
 
 ### Node Pools
 
-(Node Pools)
-!(docs/screenshots/04-node-pools.png)
+![Node Pools)](docs/screenshots/04-node-pools.png)
 ---
 
 ### Azure Container Registry
 
-(ACR)
-!(docs/screenshots/05-acr-repository.png)
+![ACR](docs/screenshots/05-acr-repository.png)
 ---
 
 ### Azure Key Vault
 
-(Key Vault)
-!(docs/screenshots/06-key-vault.png)
+![Key Vault](docs/screenshots/06-key-vault.png)
 ---
 
 ### Workload Identity
 
-(Workload Identity)
-!(docs/screenshots/07-workload-identity.png)
+![Workload Identity](docs/screenshots/07-workload-identity.png)
 ---
 
 ### NGINX Ingress
 
-(Ingress)
-!(docs/screenshots/08-nginx-ingress.png)
+![Ingress](docs/screenshots/08-nginx-ingress.png)
 ---
 
 ### Horizontal Pod Autoscaler
 
-(HPA)
-!(docs/screenshots/09-hpa-scaling.pngg)
+![HPA](docs/screenshots/09-hpa-scaling.pngg)
 ---
 
 ### Pod Disruption Budget
 
-(PDB)
-!(docs/screenshots/10-pdb.png)
+![PDB](docs/screenshots/10-pdb.png)
 ---
 
 ### Monitoring
 
-(Azure Monitor)
-!(docs/screenshots/11-monitoring.png)
+![Azure Monitor](docs/screenshots/11-monitoring.png)
 ---
 
 ### Log Analytics Workspace
 
-(LAW)
-!(docs/screenshots/12-log-analytics.png)
+![LAW](docs/screenshots/12-log-analytics.png)
 ---
 
 ### GitHub Repository
 
-(GitHub)
-!(docs/screenshots/13-github-repository.png)
+![GitHub](docs/screenshots/13-github-repository.png)
 ---
 
 ### CI/CD Pipeline
 
-(Azure DevOps)
-!(docs/screenshots/14-devops-pipeline.png)
+![Azure DevOps](docs/screenshots/14-devops-pipeline.png)
 ---
 
 ### Running Application
 
-(Flask UI)
-!(docs/screenshots/15-application-running.png)
+![Flask UI](docs/screenshots/15-application-running.png)
