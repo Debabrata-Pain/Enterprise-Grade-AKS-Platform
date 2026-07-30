@@ -368,7 +368,7 @@ Azure | Terraform | Kubernetes | Docker | Azure DevOps
 
 ### Horizontal Pod Autoscaler
 
-![HPA](docs/screenshots/09-hpa-scaling.pngg)
+![HPA](docs/screenshots/09-hpa-scaling.png)
 ---
 
 ### Pod Disruption Budget
