@@ -328,14 +328,12 @@ Azure | Terraform | Kubernetes | Docker | Azure DevOps
 
 ### Azure Infrastructure
 
-(Resource Groups)
-!(docs/screenshots/01-resource-groups.png)
+![Resource Groups](docs/screenshots/01-resource-groups.png)
 ---
 
 ### AKS Cluster
 
-(AKS Overview)
-!(docs/screenshots/02-hub-spoke-network.png)
+![AKS Overview](docs/screenshots/02-hub-spoke-network.png)
 ---
 
 ### AKS Cluster
