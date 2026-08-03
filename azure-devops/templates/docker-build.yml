@@ -1,0 +1,32 @@
+parameters:
+- name: acrServiceConnection
+  type: string
+
+- name: imageRepository
+  type: string
+
+- name: dockerfile
+  type: string
+
+- name: buildContext
+  type: string
+
+steps:
+
+- task: Docker@2
+  displayName: Build and Push Docker Image
+
+  inputs:
+    command: buildAndPush
+
+    repository: ${{ parameters.imageRepository }}
+
+    dockerfile: ${{ parameters.dockerfile }}
+
+    containerRegistry: ${{ parameters.acrServiceConnection }}
+
+    buildContext: ${{ parameters.buildContext }}
+
+    tags: |
+      $(Build.BuildId)
+      latest

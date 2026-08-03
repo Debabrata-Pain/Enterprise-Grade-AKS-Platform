@@ -1,0 +1,55 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- group: Enterprise-AKS-Variables
+
+stages:
+
+- stage: Build
+
+  displayName: Build Docker Image
+
+  jobs:
+
+  - job: DockerBuild
+
+    displayName: Build & Push Image
+
+    steps:
+
+    - checkout: self
+
+    - template: templates/docker-build.yml
+
+      parameters:
+
+        acrServiceConnection: 'ACR-ServiceConnection'
+
+        imageRepository: 'enterprise-flask'
+
+        dockerfile: 'application/Dockerfile'
+
+        buildContext: 'application'
+
+    - task: CopyFiles@2
+
+      displayName: Copy Kubernetes Manifests
+
+      inputs:
+        SourceFolder: application/k8s
+        Contents: '**'
+        TargetFolder: $(Build.ArtifactStagingDirectory)
+
+    - task: PublishBuildArtifacts@1
+
+      displayName: Publish K8s Manifests
+
+      inputs:
+        PathtoPublish: $(Build.ArtifactStagingDirectory)
+        ArtifactName: manifests
