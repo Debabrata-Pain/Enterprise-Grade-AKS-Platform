@@ -1,0 +1,56 @@
+parameters:
+- name: azureSubscription
+  type: string
+
+- name: resourceGroup
+  type: string
+
+- name: aksCluster
+  type: string
+
+steps:
+
+- task: AzureCLI@2
+  displayName: Get AKS Credentials
+
+  inputs:
+    azureSubscription: ${{ parameters.azureSubscription }}
+    scriptType: bash
+    scriptLocation: inlineScript
+
+    inlineScript: |
+
+      az aks get-credentials \
+      --resource-group ${{ parameters.resourceGroup }} \
+      --name ${{ parameters.aksCluster }} \
+      --overwrite-existing
+
+      cd $(Pipeline.Workspace)/manifests
+
+      sed -i "s/IMAGE_TAG/$(Build.BuildId)/g" deployment.yaml
+
+      kubectl apply -f .
+
+- task: KubernetesManifest@1
+
+  displayName: Deploy to AKS
+
+  inputs:
+
+    action: deploy
+
+    manifests: |
+
+      $(Pipeline.Workspace)/manifests/deployment.yaml
+
+      $(Pipeline.Workspace)/manifests/service.yaml
+
+      $(Pipeline.Workspace)/manifests/ingress.yaml
+
+      $(Pipeline.Workspace)/manifests/hpa.yaml
+
+      $(Pipeline.Workspace)/manifests/pdb.yaml
+
+      $(Pipeline.Workspace)/manifests/serviceaccount.yaml
+
+      $(Pipeline.Workspace)/manifests/secretproviderclass.yaml
