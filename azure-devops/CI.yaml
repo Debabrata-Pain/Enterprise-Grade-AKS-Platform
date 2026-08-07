@@ -71,7 +71,7 @@ stages:
 
       artifact: manifests
 
-    - template: templates/aks-deploy.yml
+    - template: templates/deploy-aks.yml
 
       parameters:
 
