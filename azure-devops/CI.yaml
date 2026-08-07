@@ -75,7 +75,7 @@ stages:
 
       parameters:
 
-        azureSubscription: 'ACR-ServiceConnection'
+        azureSubscription: 'devops-spn'
 
         resourceGroup: 'prod-aks-rg'
 
