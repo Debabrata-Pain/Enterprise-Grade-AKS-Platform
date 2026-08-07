@@ -68,3 +68,18 @@ module "private_endpoint_subnet" {
 
 }
 
+module "agent_subnet" {
+
+  source = "../../modules/subnet"
+
+  name = "agent-subnet"
+
+  resource_group_name = module.network_rg.resource_group_name
+
+  virtual_network_name = module.aks_vnet.name
+
+  address_prefixes = [
+    "10.1.4.0/24"
+  ]
+
+}

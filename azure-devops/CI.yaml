@@ -4,7 +4,7 @@ trigger:
       - main
 
 pool:
-  vmImage: ubuntu-latest
+  name: Enterprise-AKS-Agents
 
 variables:
 - group: Enterprise-AKS-Variables

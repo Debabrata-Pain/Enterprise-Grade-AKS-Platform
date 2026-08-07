@@ -1,8 +1,10 @@
 locals {
 
+  prefix = "${var.environment}-aks"
+
   common_tags = {
 
-    Environment = "Production"
+    Environment = var.environment
 
     Project = "Enterprise-AKS"
 
@@ -60,15 +62,4 @@ module "monitoring_rg" {
 
   tags = local.common_tags
 
-}
-
-locals {
-  prefix = "${var.environment}-aks"
-
-  common_tags = {
-    Environment = var.environment
-    Project     = "Enterprise-AKS"
-    Owner       = "Debabrata"
-    ManagedBy   = "Terraform"
-  }
 }
