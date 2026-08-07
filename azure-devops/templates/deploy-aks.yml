@@ -11,7 +11,7 @@ parameters:
 steps:
 
 - task: AzureCLI@2
-  displayName: Get AKS Credentials
+  displayName: Deploy to AKS
 
   inputs:
     azureSubscription: ${{ parameters.azureSubscription }}
@@ -31,26 +31,4 @@ steps:
 
       kubectl apply -f .
 
-- task: KubernetesManifest@1
-
-  displayName: Deploy to AKS
-
-  inputs:
-
-    action: deploy
-
-    manifests: |
-
-      $(Pipeline.Workspace)/manifests/deployment.yaml
-
-      $(Pipeline.Workspace)/manifests/service.yaml
-
-      $(Pipeline.Workspace)/manifests/ingress.yaml
-
-      $(Pipeline.Workspace)/manifests/hpa.yaml
-
-      $(Pipeline.Workspace)/manifests/pdb.yaml
-
-      $(Pipeline.Workspace)/manifests/serviceaccount.yaml
-
-      $(Pipeline.Workspace)/manifests/secretproviderclass.yaml
+      kubectl rollout status deployment/enterprise-flask
