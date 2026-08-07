@@ -54,29 +54,29 @@ stages:
         PathtoPublish: $(Build.ArtifactStagingDirectory)
         ArtifactName: manifests
 
-  - stage: Deploy
-    displayName: Deploy to AKS
-    dependsOn: Build
-    condition: succeeded()
+- stage: Deploy
+  displayName: Deploy to AKS
+  dependsOn: Build
+  condition: succeeded()
     
-    jobs:
+  jobs:
 
-    - job: Deploy
+  - job: Deploy
 
-      displayName: Kubernetes Deployment
+    displayName: Kubernetes Deployment
 
-      steps:
+    steps:
 
-      - download: current
+    - download: current
 
-        artifact: manifests
+      artifact: manifests
 
-      - template: templates/aks-deploy.yml
+    - template: templates/aks-deploy.yml
 
-        parameters:
+      parameters:
 
-          azureSubscription: 'Azure-ServiceConnection'
+        azureSubscription: 'Azure-ServiceConnection'
 
-          resourceGroup: 'prod-aks-rg'
+        resourceGroup: 'prod-aks-rg'
 
-          aksCluster: 'prod-aks'
+        aksCluster: 'prod-aks'
