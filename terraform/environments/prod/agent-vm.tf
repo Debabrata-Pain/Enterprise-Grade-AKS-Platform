@@ -19,5 +19,12 @@ module "azure_devops_agent" {
   public_key = <<EOF
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEPY/HreCXbnhNYDEIybc5cAi5kfPjUsl6IGV807pVvi DebabrataPain
 EOF
-  
+
+  identity_ids = [
+    module.azure_devops_agent_identity.id
+  ]
+
+  depends_on = [
+    module.agent_keyvault_secrets_role
+  ]
 }
