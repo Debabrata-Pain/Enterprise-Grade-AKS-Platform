@@ -22,7 +22,7 @@ stages:
 
     - checkout: self
 
-    - template: templates/docker-build.yml
+    - template: templates/docker-build-image.yml
 
       parameters:
         acrServiceConnection: 'ACR-ServiceConnection'
