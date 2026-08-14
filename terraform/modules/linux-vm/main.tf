@@ -95,15 +95,21 @@ resource "azurerm_linux_virtual_machine" "this" {
   ]
 
   identity {
-  type = "SystemAssigned"
+  type         = "UserAssigned"
+  identity_ids = var.identity_ids
   }
 
   disable_password_authentication = true
+  
+  custom_data = base64encode(
+  templatefile("${path.module}/cloud-init.yaml", {
+    ado_agent_script = file("${path.module}/register-ado-agent.sh")
+  })
+)
 
   admin_ssh_key {
 
     username = var.admin_username
-
     public_key = var.public_key
 
   }
@@ -111,7 +117,6 @@ resource "azurerm_linux_virtual_machine" "this" {
   os_disk {
 
     caching = "ReadWrite"
-
     storage_account_type = "Standard_LRS"
 
   }
@@ -119,11 +124,8 @@ resource "azurerm_linux_virtual_machine" "this" {
   source_image_reference {
 
     publisher = "Canonical"
-
     offer = "ubuntu-24_04-lts"
-
     sku = "server"
-
     version = "latest"
 
   }
@@ -131,3 +133,4 @@ resource "azurerm_linux_virtual_machine" "this" {
   tags = var.tags
 
 }
+

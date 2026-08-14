@@ -33,22 +33,18 @@ resource "azurerm_kubernetes_cluster" "this" {
 default_node_pool {
 
   name = "system"
-
   vm_size = "Standard_B2s"
-
   node_count = 2
-
   zones = ["1", "2"]
-
   os_disk_size_gb = 100
-
   type = "VirtualMachineScaleSets"
-
   only_critical_addons_enabled = true
-
   temporary_name_for_rotation = "systemtmp"
-
   vnet_subnet_id = var.system_subnet_id
+
+  upgrade_settings {
+  max_surge = "10%"
+}
 
 }
 

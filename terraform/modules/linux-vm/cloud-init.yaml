@@ -1,0 +1,42 @@
+#cloud-config
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - docker.io
+  - unzip
+  - curl
+  - jq
+  - apt-transport-https
+  - ca-certificates
+  - gnupg
+  - lsb-release
+  - git
+
+write_files:
+  - path: /usr/local/bin/register-ado-agent.sh
+    owner: root:root
+    permissions: "0755"
+cd ~/azagent    content: |
+      ${indent(6, ado_agent_script)}
+
+runcmd:
+
+  - systemctl enable docker
+  - systemctl start docker
+
+  - usermod -aG docker azureuser
+
+  - curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
+  - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+  - rm kubectl
+
+  - mkdir -p /home/azureuser/azagent
+  - chown -R azureuser:azureuser /home/azureuser/azagent
+
+  - /usr/local/bin/register-ado-agent.sh
+
+  - touch /var/lib/azure-devops-agent-bootstrap-complete

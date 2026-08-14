@@ -28,5 +28,9 @@ resource "azurerm_kubernetes_cluster_node_pool" "user" {
     workload = "applications"
   }
 
+  upgrade_settings {
+  max_surge = "10%"
+}
+
   tags = var.tags
 }

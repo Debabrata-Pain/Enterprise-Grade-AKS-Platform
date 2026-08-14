@@ -17,18 +17,31 @@ steps:
     azureSubscription: ${{ parameters.azureSubscription }}
     scriptType: bash
     scriptLocation: inlineScript
-
     inlineScript: |
+        set -e
 
-      az aks get-credentials \
-      --resource-group ${{ parameters.resourceGroup }} \
-      --name ${{ parameters.aksCluster }} \
-      --overwrite-existing
+        echo "Getting AKS credentials..."
+        az aks get-credentials \
+          --resource-group "${{ parameters.resourceGroup }}" \
+          --name "${{ parameters.aksCluster }}" \
+          --overwrite-existing
 
-      cd $(Pipeline.Workspace)/manifests
+        echo "AKS connection:"
+        kubectl cluster-info
 
-      sed -i "s/IMAGE_TAG/$(Build.BuildId)/g" deployment.yaml
+        echo "Preparing manifests..."
+        cd "$(Pipeline.Workspace)/manifests"
 
-      kubectl apply -f .
+        sed -i "s/IMAGE_TAG/$(Build.BuildId)/g" deployment.yaml
 
-      kubectl rollout status deployment/enterprise-flask
+        echo "Applying Kubernetes manifests..."
+        kubectl apply -f .
+
+        echo "Waiting for deployment rollout..."
+        kubectl rollout status deployment/enterprise-flask --timeout=180s
+
+        echo "Deployment successful."
+        kubectl get deployment enterprise-flask
+        kubectl get pods -l app=enterprise-flask
+
+    

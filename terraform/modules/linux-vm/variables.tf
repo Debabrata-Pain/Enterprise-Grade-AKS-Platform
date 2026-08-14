@@ -19,3 +19,8 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "identity_ids" {
+  type    = list(string)
+  default = []
+}

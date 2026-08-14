@@ -12,13 +12,10 @@ variables:
 stages:
 
 - stage: Build
-
   displayName: Build Docker Image
 
   jobs:
-
   - job: DockerBuild
-
     displayName: Build & Push Image
 
     steps:
@@ -28,17 +25,12 @@ stages:
     - template: templates/docker-build.yml
 
       parameters:
-
         acrServiceConnection: 'ACR-ServiceConnection'
-
         imageRepository: 'enterprise-flask'
-
         dockerfile: 'application/Dockerfile'
-
         buildContext: 'application'
 
     - task: CopyFiles@2
-
       displayName: Copy Kubernetes Manifests
 
       inputs:
@@ -47,7 +39,6 @@ stages:
         TargetFolder: $(Build.ArtifactStagingDirectory)
 
     - task: PublishBuildArtifacts@1
-
       displayName: Publish K8s Manifests
 
       inputs:
@@ -68,15 +59,11 @@ stages:
     steps:
 
     - download: current
-
       artifact: manifests
 
     - template: templates/deploy-aks.yml
-
       parameters:
 
         azureSubscription: 'devops-spn'
-
         resourceGroup: 'prod-aks-rg'
-
         aksCluster: 'prod-aks'
