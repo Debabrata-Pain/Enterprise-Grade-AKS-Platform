@@ -15,7 +15,7 @@ module "agent_keyvault_secrets_role" {
 
   scope = module.keyvault.id
 
-  role_name = "Key Vault Secrets User"
+  role_name = "Key Vault Secrets Officer"
 
   principal_id = module.azure_devops_agent_identity.principal_id
 }
