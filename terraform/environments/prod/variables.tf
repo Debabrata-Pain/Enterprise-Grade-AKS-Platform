@@ -12,3 +12,8 @@ variable "environment" {
   description = "Environment Name"
   type        = string
 }
+
+variable "ado_acr_service_principal_object_id" {
+  description = "Object ID of the service principal used by the Azure DevOps ACR service connection"
+  type        = string
+}
