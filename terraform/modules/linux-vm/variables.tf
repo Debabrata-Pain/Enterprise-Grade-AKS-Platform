@@ -24,3 +24,11 @@ variable "identity_ids" {
   type    = list(string)
   default = []
 }
+
+variable "agent_version" {
+type = string
+}
+
+variable "agent_package" {
+type = string
+}

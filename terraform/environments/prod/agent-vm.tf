@@ -10,11 +10,14 @@ module "azure_devops_agent" {
 
   subnet_id = module.agent_subnet.id
 
+  agent_version = "4.260.0"
+  agent_package = "vsts-agent-linux-x64-4.260.0.tar.gz"
+
   vm_size = "Standard_B1s"
 
   admin_username = "azureuser"
 
-  allowed_ssh_ip = "154.210.225.134/32"
+  allowed_ssh_ip = "20.74.166.212/32"
 
   public_key = <<EOF
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEPY/HreCXbnhNYDEIybc5cAi5kfPjUsl6IGV807pVvi DebabrataPain

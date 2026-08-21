@@ -104,6 +104,8 @@ resource "azurerm_linux_virtual_machine" "this" {
   custom_data = base64encode(
   templatefile("${path.module}/cloud-init.yaml", {
     ado_agent_script = file("${path.module}/register-ado-agent.sh")
+    AGENT_VERSION = var.agent_version
+    AGENT_PACKAGE = var.agent_package
   })
 )
 
