@@ -25,3 +25,14 @@ module "agent_keyvault_secrets_role" {
 
   principal_id = module.azure_devops_agent_identity.principal_id
 }
+
+module "flask_keyvault_secrets_role" {
+
+  source = "../../modules/role-assignment"
+
+  scope      = module.keyvault.id
+
+  role_name  = "Key Vault Secrets User"
+  
+  principal_id = module.flask_identity.principal_id
+}
