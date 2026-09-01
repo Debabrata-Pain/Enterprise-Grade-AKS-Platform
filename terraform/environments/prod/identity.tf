@@ -26,14 +26,11 @@ module "azure_devops_agent_identity" {
 
 }
 
-module "flask_identity" {
-
+module "enterprise_flask_identity" {
   source = "../../modules/managed-identity"
 
-  name                = "${var.environment}-flask-identity"
-
+  name                = "${var.environment}-enterprise-flask-identity"
   location            = var.location
-  
   resource_group_name = module.shared_rg.resource_group_name
 
   tags = local.common_tags
@@ -45,7 +42,7 @@ resource "azurerm_federated_identity_credential" "flask" {
 
   resource_group_name = module.shared_rg.resource_group_name
 
-  parent_id = module.flask_identity.id
+  parent_id = module.enterprise_flask_identity.id
 
   audience = [
     "api://AzureADTokenExchange"
