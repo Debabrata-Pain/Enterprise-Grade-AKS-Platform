@@ -49,11 +49,6 @@ spec:
               cpu: "500m"
               memory: "512Mi"
 
-          volumeMounts:
-            - name: secrets-store
-              mountPath: /mnt/secrets-store
-              readOnly: true
-
           startupProbe:
             httpGet:
               path: /health
@@ -75,10 +70,4 @@ spec:
             initialDelaySeconds: 20
             periodSeconds: 15
 
-      volumes:
-        - name: secrets-store
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: azure-kv
+      
