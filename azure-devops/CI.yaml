@@ -45,33 +45,63 @@ stages:
         PathtoPublish: $(Build.ArtifactStagingDirectory)
         ArtifactName: manifests
 
+- stage: ProductionApproval 
+  displayName: Production Environment Approval 
+  dependsOn: Build 
+  condition: succeeded() 
+  
+  jobs: 
+  
+  - job: Approval 
+    displayName: Waiting for Production Approval 
+    pool: server 
+    
+    steps: 
+    
+    - task: ManualValidation@1 
+      
+      displayName: Approve Production Deployment 
+      
+      inputs: 
+        notifyUsers: | 
+          $(Build.RequestedForEmail) 
+          
+        approvers: | 
+          $(Build.RequestedFor) 
+          
+        instructions: | 
+          Please review and approve the production deployment. 
+          
+          Build: $(Build.BuildNumber) 
+          Branch: $(Build.SourceBranch) 
+          
+          Approve this validation to continue with deployment to AKS. 
+          
+        onTimeout: reject 
+        
+        timeoutInMinutes: 1440
+
 - stage: Deploy
   displayName: Deploy to AKS
-  dependsOn: Build
+  dependsOn: ProductionApproval
   condition: succeeded()
     
   jobs:
 
   - job: Deploy
 
-    deployment: Kubernetes Deployment
-
-    environment: production
-    
-    strategy: 
-      runOnce: 
-        deploy: 
+    displayName: Kubernetes Deployment 
         
-          steps: 
+    steps: 
           
-          - download: current 
+      - download: current 
             
-            artifact: manifests 
+        artifact: manifests 
             
-          - template: templates/deploy-aks.yml 
+      - template: templates/deploy-aks.yml 
             
-            parameters: 
+        parameters: 
             
-              azureSubscription: 'devops-spn' 
-              resourceGroup: 'prod-aks-rg' 
-              aksCluster: 'prod-aks'
+          azureSubscription: 'devops-spn' 
+          resourceGroup: 'prod-aks-rg' 
+          aksCluster: 'prod-aks'
