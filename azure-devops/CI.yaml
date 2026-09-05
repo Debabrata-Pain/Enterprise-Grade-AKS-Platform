@@ -56,6 +56,8 @@ stages:
 
     displayName: Kubernetes Deployment
 
+    environment: production
+    
     steps:
 
     - download: current
