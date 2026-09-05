@@ -54,18 +54,24 @@ stages:
 
   - job: Deploy
 
-    displayName: Kubernetes Deployment
+    deployment: Kubernetes Deployment
 
     environment: production
     
-    steps:
-
-    - download: current
-      artifact: manifests
-
-    - template: templates/deploy-aks.yml
-      parameters:
-
-        azureSubscription: 'devops-spn'
-        resourceGroup: 'prod-aks-rg'
-        aksCluster: 'prod-aks'
+    strategy: 
+      runOnce: 
+        deploy: 
+        
+          steps: 
+          
+          - download: current 
+            
+            artifact: manifests 
+            
+          - template: templates/deploy-aks.yml 
+            
+            parameters: 
+            
+              azureSubscription: 'devops-spn' 
+              resourceGroup: 'prod-aks-rg' 
+              aksCluster: 'prod-aks'
