@@ -26,7 +26,7 @@ write_files:
       AZDO_POOL="Enterprise-AKS-Agents"
       AZDO_AGENT_NAME="prod-ado-agent"
 
-      KEYVAULT_NAME="prodkvdeb2026"
+      KEYVAULT_NAME="prod-bootstrap-kv"
       PAT_SECRET_NAME="ado-agent-pat"
 
       AGENT_DIR="/home/azureuser/azagent"

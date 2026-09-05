@@ -16,12 +16,12 @@ module "ado_acr_push_role" {
   principal_id = var.ado_acr_service_principal_object_id
 }
 
-module "agent_keyvault_secrets_role" {
+module "agent_bootstrap_keyvault_role" {
   source = "../../modules/role-assignment"
 
-  scope = module.keyvault.id
+  scope = data.azurerm_key_vault.bootstrap.id
 
-  role_name = "Key Vault Secrets Officer"
+  role_name = "Key Vault Secrets User"
 
   principal_id = module.azure_devops_agent_identity.principal_id
 }

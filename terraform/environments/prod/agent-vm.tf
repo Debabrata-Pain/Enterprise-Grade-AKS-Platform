@@ -17,7 +17,7 @@ module "azure_devops_agent" {
 
   admin_username = "azureuser"
 
-  allowed_ssh_ip = "20.74.166.212/32"
+  allowed_ssh_ip = "*"
 
   public_key = <<EOF
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEPY/HreCXbnhNYDEIybc5cAi5kfPjUsl6IGV807pVvi DebabrataPain
@@ -28,6 +28,6 @@ EOF
   ]
 
   depends_on = [
-    module.agent_keyvault_secrets_role
+    module.agent_bootstrap_keyvault_role
   ]
 }
