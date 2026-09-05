@@ -64,10 +64,10 @@ stages:
       
       inputs: 
         notifyUsers: | 
-          $(Build.RequestedForEmail) 
+          debabrata.pain@cloud4c.com 
           
         approvers: | 
-          $(Build.RequestedFor) 
+          debabrata.pain@cloud4c.com 
           
         instructions: | 
           Please review and approve the production deployment. 
