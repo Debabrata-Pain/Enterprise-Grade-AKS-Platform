@@ -25,7 +25,7 @@ stages:
   - deployment: EnvironmentApproval
     displayName: Waiting for Environment Approval
 
-    environment: 'Environment'
+    environment: 'production'
 
     strategy:
       runOnce:
