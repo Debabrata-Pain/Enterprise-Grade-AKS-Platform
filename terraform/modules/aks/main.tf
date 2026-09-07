@@ -71,9 +71,6 @@ network_profile {
 }
 
 oms_agent {
-
   log_analytics_workspace_id = var.log_analytics_workspace_id
-
 }
-
 }

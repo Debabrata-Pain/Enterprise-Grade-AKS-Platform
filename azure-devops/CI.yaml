@@ -11,10 +11,45 @@ variables:
 
 stages:
 
+# ============================================================
+# STAGE 1 - PRODUCTION APPROVAL
+# ============================================================
+
+- stage: ProductionApproval
+  displayName: Production Approval
+  dependsOn: []
+  condition: succeeded()
+
+  jobs:
+
+  - deployment: ProductionApproval
+    displayName: Waiting for Production Approval
+
+    environment: 'Production'
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - script: |
+              echo "Production approval granted."
+              echo "Pipeline will now proceed to Build."
+            displayName: Approval Granted
+
+
+# ============================================================
+# STAGE 2 - BUILD
+# ============================================================
+
 - stage: Build
   displayName: Build Docker Image
 
+  dependsOn: ProductionApproval
+  condition: succeeded()
+
   jobs:
+
   - job: DockerBuild
     displayName: Build & Push Image
 
@@ -46,34 +81,29 @@ stages:
         ArtifactName: manifests
 
 
+# ============================================================
+# STAGE 3 - DEPLOY
+# ============================================================
+
 - stage: Deploy
   displayName: Deploy to AKS
+
   dependsOn: Build
   condition: succeeded()
-    
+
   jobs:
 
-  - deployment: DeployAKS
+  - job: Deploy
     displayName: Kubernetes Deployment
 
-    environment:
-      name: Production
+    steps:
 
-    pool:
-      name: Enterprise-AKS-Agents
+    - download: current
+      artifact: manifests
 
-    strategy:
-      runOnce:
-        deploy:
+    - template: templates/deploy-aks.yml
 
-          steps: 
-          
-          - download: current 
-            artifact: manifests 
-            
-          - template: templates/deploy-aks.yml 
-            parameters: 
-            
-              azureSubscription: 'devops-spn' 
-              resourceGroup: 'prod-aks-rg' 
-              aksCluster: 'prod-aks'
+      parameters:
+        azureSubscription: 'devops-spn'
+        resourceGroup: 'prod-aks-rg'
+        aksCluster: 'prod-aks'
