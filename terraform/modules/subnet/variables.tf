@@ -13,3 +13,8 @@ variable "virtual_network_name" {
 variable "address_prefixes" {
   type = list(string)
 }
+
+variable "network_security_group_id" {
+type = string
+default = null
+}

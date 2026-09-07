@@ -1,3 +1,5 @@
+#checkov:skip=CKV2_AZURE_31:NSGs are managed separately from subnet module
+
 resource "azurerm_subnet" "this" {
 
   name                 = var.name
@@ -7,3 +9,4 @@ resource "azurerm_subnet" "this" {
   address_prefixes = var.address_prefixes
 
 }
+
