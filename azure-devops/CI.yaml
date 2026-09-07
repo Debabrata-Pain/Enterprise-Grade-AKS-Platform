@@ -15,17 +15,17 @@ stages:
 # STAGE 1 - PRODUCTION APPROVAL
 # ============================================================
 
-- stage: ProductionApproval
-  displayName: Production Approval
+- stage: EnvironmentApproval
+  displayName: Environment Approval
   dependsOn: []
   condition: succeeded()
 
   jobs:
 
-  - deployment: ProductionApproval
-    displayName: Waiting for Production Approval
+  - deployment: EnvironmentApproval
+    displayName: Waiting for Environment Approval
 
-    environment: 'Production'
+    environment: 'Environment'
 
     strategy:
       runOnce:
@@ -33,7 +33,7 @@ stages:
           steps:
 
           - script: |
-              echo "Production approval granted."
+              echo "Environment approval granted."
               echo "Pipeline will now proceed to Build."
             displayName: Approval Granted
 
@@ -66,7 +66,7 @@ stages:
           bridgecrew/checkov \
           --directory /tf/terraform \
           --framework terraform
-          
+
       displayName: Checkov Terraform Scan
 
     - script: |
