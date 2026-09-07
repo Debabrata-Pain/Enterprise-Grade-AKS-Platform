@@ -85,7 +85,7 @@ stages:
 - stage: Build
   displayName: Build Docker Image
 
-  dependsOn: ProductionApproval
+  dependsOn: Checkov
   condition: succeeded()
 
   jobs:
