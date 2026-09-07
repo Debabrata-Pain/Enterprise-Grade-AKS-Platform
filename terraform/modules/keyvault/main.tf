@@ -1,4 +1,4 @@
-#checkov:skip=CKV2_AZURE_32: Private endpoint will be implemented in a future phase
+#checkov:skip=CKV2_AZURE_32: Private Endpoint not required in current architecture
 
 #checkov:skip=CKV_AZURE_42:Purge protection intentionally disabled for non-production environment
 
