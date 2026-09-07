@@ -44,37 +44,43 @@ stages:
 
 - stage: Checkov
   displayName: Checkov Security Scan
-
-  dependsOn: ProductionApproval
-
+  dependsOn: EnvironmentApproval
   condition: succeeded()
 
   jobs:
-
   - job: CheckovScan
-    displayName: Scan Infrastructure and Kubernetes
+    displayName: Checkov IaC Security Scan
 
     steps:
 
     - checkout: self
 
     - script: |
-        python3 -m pip install --upgrade pip
-        python3 -m pip install checkov
-      displayName: Install Checkov
+        echo "========================================"
+        echo "Checkov - Terraform Scan"
+        echo "========================================"
 
-    - script: |
-        checkov \
-          --directory terraform \
-          --framework terraform \
-          --output cli
+        docker run --rm \
+          -v "$(Build.SourcesDirectory):/tf" \
+          -w /tf \
+          bridgecrew/checkov \
+          --directory /tf/terraform \
+          --framework terraform
+          
       displayName: Checkov Terraform Scan
 
     - script: |
-        checkov \
-          --directory application/k8s \
-          --framework kubernetes \
-          --output cli
+        echo "========================================"
+        echo "Checkov - Kubernetes Scan"
+        echo "========================================"
+
+        docker run --rm \
+          -v "$(Build.SourcesDirectory):/tf" \
+          -w /tf \
+          bridgecrew/checkov \
+          --directory /tf/application/k8s \
+          --framework kubernetes
+
       displayName: Checkov Kubernetes Scan
 
 
