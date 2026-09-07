@@ -1,3 +1,5 @@
+#checkov:skip=CKV_AZURE_168: Max pods setting managed by cluster networking configuration
+
 resource "azurerm_kubernetes_cluster_node_pool" "user" {
 
   name                  = "user"

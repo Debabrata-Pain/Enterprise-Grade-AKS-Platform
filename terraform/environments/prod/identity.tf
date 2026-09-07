@@ -40,8 +40,6 @@ resource "azurerm_federated_identity_credential" "flask" {
 
   name = "${var.environment}-flask-federated-credential"
 
-  resource_group_name = module.shared_rg.resource_group_name
-
   parent_id = module.enterprise_flask_identity.id
 
   audience = [

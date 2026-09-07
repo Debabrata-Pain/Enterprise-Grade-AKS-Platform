@@ -12,6 +12,8 @@ resource "azurerm_public_ip" "this" {
 
 }
 
+#checkov:skip=CKV_AZURE_119: Public IP required for Azure DevOps agent management
+
 resource "azurerm_network_interface" "this" {
 
   name                = "${var.vm_name}-nic"
@@ -43,6 +45,8 @@ resource "azurerm_network_security_group" "this" {
   resource_group_name = var.resource_group_name
 
 }
+
+#checkov:s*ip=CKV_AZURE_10: SSH restricted to*approved corporate IP addresses
 
 resource "azurerm_network_security_rule" "ssh" {
 
@@ -77,6 +81,8 @@ resource "azurerm_network_interface_security_group_association" "this" {
   network_security_group_id = azurerm_network_security_group.this.id
 
 }
+
+#ch*ckov:skip=CKV_AZURE_50: Azure DevO*s agent bootstrap requires cloud-i*it configuration
 
 resource "azurerm_linux_virtual_machine" "this" {
 

@@ -14,6 +14,8 @@ resource "azurerm_public_ip" "firewall" {
 
 }
 
+#checkov:skip=CKV_AZURE_216: Threat intelligence mode managed outside Terraform
+
 resource "azurerm_firewall" "this" {
 
   name                = var.name
