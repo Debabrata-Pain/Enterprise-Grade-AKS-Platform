@@ -39,7 +39,47 @@ stages:
 
 
 # ============================================================
-# STAGE 2 - BUILD
+# STAGE 2 - CHECKOV SECURITY SCAN
+# ============================================================
+
+- stage: Checkov
+  displayName: Checkov Security Scan
+
+  dependsOn: ProductionApproval
+
+  condition: succeeded()
+
+  jobs:
+
+  - job: CheckovScan
+    displayName: Scan Infrastructure and Kubernetes
+
+    steps:
+
+    - checkout: self
+
+    - script: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install checkov
+      displayName: Install Checkov
+
+    - script: |
+        checkov \
+          --directory terraform \
+          --framework terraform \
+          --output cli
+      displayName: Checkov Terraform Scan
+
+    - script: |
+        checkov \
+          --directory application/k8s \
+          --framework kubernetes \
+          --output cli
+      displayName: Checkov Kubernetes Scan
+
+
+# ============================================================
+# STAGE 3 - BUILD
 # ============================================================
 
 - stage: Build
@@ -82,7 +122,7 @@ stages:
 
 
 # ============================================================
-# STAGE 3 - DEPLOY
+# STAGE 4 - DEPLOY
 # ============================================================
 
 - stage: Deploy
