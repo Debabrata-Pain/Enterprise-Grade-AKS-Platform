@@ -13,8 +13,14 @@ resource "azurerm_kubernetes_cluster" "this" {
   oidc_issuer_enabled       = true
   workload_identity_enabled = true
 
-  key_vault_secrets_provider {
+    key_vault_secrets_provider {
     secret_rotation_enabled = true
+  }
+
+  web_app_routing {
+    dns_zone_ids = []
+
+    default_nginx_controller = "External"
   }
 
   azure_policy_enabled = true
