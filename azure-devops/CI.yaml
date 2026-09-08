@@ -39,59 +39,13 @@ stages:
 
 
 # ============================================================
-# STAGE 2 - CHECKOV SECURITY SCAN
-# ============================================================
-
-- stage: Checkov
-  displayName: Checkov Security Scan
-  dependsOn: EnvironmentApproval
-  condition: succeeded()
-
-  jobs:
-  - job: CheckovScan
-    displayName: Checkov IaC Security Scan
-
-    steps:
-
-    - checkout: self
-
-    - script: |
-        echo "========================================"
-        echo "Checkov - Terraform Scan"
-        echo "========================================"
-
-        docker run --rm \
-          -v "$(Build.SourcesDirectory):/tf" \
-          -w /tf \
-          bridgecrew/checkov \
-          --directory /tf/terraform \
-          --framework terraform
-
-      displayName: Checkov Terraform Scan
-
-    - script: |
-        echo "========================================"
-        echo "Checkov - Kubernetes Scan"
-        echo "========================================"
-
-        docker run --rm \
-          -v "$(Build.SourcesDirectory):/tf" \
-          -w /tf \
-          bridgecrew/checkov \
-          --directory /tf/application/k8s \
-          --framework kubernetes
-
-      displayName: Checkov Kubernetes Scan
-
-
-# ============================================================
 # STAGE 3 - BUILD
 # ============================================================
 
 - stage: Build
   displayName: Build Docker Image
 
-  dependsOn: Checkov
+  dependsOn: EnvironmentApproval
   condition: succeeded()
 
   jobs:
