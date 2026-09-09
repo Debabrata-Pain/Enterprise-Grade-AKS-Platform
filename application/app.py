@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template
 import os
 import socket
+import time
 from datetime import datetime
 
 from kubernetes import client, config
@@ -9,6 +10,7 @@ from kubernetes import client, config
 app = Flask(__name__)
 
 VERSION = "1.0.0"
+APP_START_TIME = time.time()
 
 
 # ============================================================
@@ -69,6 +71,19 @@ def get_kubernetes_clients():
 
     return core_v1, apps_v1, networking_v1
 
+def get_uptime():
+    uptime_seconds = int(time.time() - APP_START_TIME)
+
+    days = uptime_seconds // 86400
+    hours = (uptime_seconds % 86400) // 3600
+    minutes = (uptime_seconds % 3600) // 60
+
+    if days > 0:
+        return f"{days}d {hours}h"
+    elif hours > 0:
+        return f"{hours}h {minutes}m"
+    else:
+        return f"{minutes}m"
 
 # ============================================================
 # Dashboard
@@ -240,7 +255,9 @@ def dashboard():
             pods=pod_data,
             deployments=deployment_data,
             services=service_data,
-            ingresses=ingress_data
+            ingresses=ingress_data,
+
+            uptime=get_uptime()
         )
 
 
