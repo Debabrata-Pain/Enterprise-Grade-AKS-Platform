@@ -1,8 +1,7 @@
 from flask import Flask, jsonify, render_template
 import os
 import socket
-import time
-from datetime import datetime
+from datetime import datetime, time
 
 from kubernetes import client, config
 
@@ -10,8 +9,6 @@ from kubernetes import client, config
 app = Flask(__name__)
 
 VERSION = "1.0.0"
-APP_START_TIME = time.time()
-
 
 # ============================================================
 # Existing Application Endpoints
@@ -71,19 +68,6 @@ def get_kubernetes_clients():
 
     return core_v1, apps_v1, networking_v1
 
-def get_uptime():
-    uptime_seconds = int(time.time() - APP_START_TIME)
-
-    days = uptime_seconds // 86400
-    hours = (uptime_seconds % 86400) // 3600
-    minutes = (uptime_seconds % 3600) // 60
-
-    if days > 0:
-        return f"{days}d {hours}h"
-    elif hours > 0:
-        return f"{hours}h {minutes}m"
-    else:
-        return f"{minutes}m"
 
 # ============================================================
 # Dashboard
@@ -221,6 +205,27 @@ def dashboard():
             if deployment["desired"] == deployment["ready"]
         ])
 
+        # ----------------------------------------------------
+        # Platform Availability
+        # ----------------------------------------------------
+
+        if node_data and deployment_data:
+
+            node_availability = ready_nodes / len(node_data)
+            deployment_availability = (
+                healthy_deployments / len(deployment_data)
+            )
+
+            availability_percentage = (
+                (node_availability + deployment_availability) / 2
+            ) * 100
+
+        else:
+
+            availability_percentage = 0.0
+
+        availability_percentage = round(availability_percentage, 2)
+
 
         overall_status = "Healthy"
 
@@ -257,7 +262,7 @@ def dashboard():
             services=service_data,
             ingresses=ingress_data,
 
-            uptime=get_uptime()
+            availability=f"{availability_percentage:.2f}%"
         )
 
 
@@ -288,6 +293,8 @@ def dashboard():
             deployments=[],
             services=[],
             ingresses=[],
+
+            availability="0.00%",
 
             error=str(error)
         )
