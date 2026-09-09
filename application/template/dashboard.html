@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Enterprise AKS Dashboard</title>
+
+    <meta http-equiv="refresh" content="30">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f4f6f8;
+
+            color: #1f2937;
+        }
+
+
+        .header {
+
+            background: #111827;
+
+            color: white;
+
+            padding: 22px 35px;
+        }
+
+
+        .header h1 {
+
+            margin: 0;
+
+            font-size: 26px;
+        }
+
+
+        .header p {
+
+            margin: 6px 0 0;
+
+            color: #cbd5e1;
+        }
+
+
+        .container {
+
+            max-width: 1400px;
+
+            margin: auto;
+
+            padding: 25px;
+        }
+
+
+        .status {
+
+            padding: 18px;
+
+            border-radius: 10px;
+
+            margin-bottom: 25px;
+
+            background: #dcfce7;
+
+            border: 1px solid #86efac;
+
+            color: #166534;
+        }
+
+
+        .status.degraded {
+
+            background: #fef3c7;
+
+            border-color: #fcd34d;
+
+            color: #92400e;
+        }
+
+
+        .status.unavailable {
+
+            background: #fee2e2;
+
+            border-color: #fca5a5;
+
+            color: #991b1b;
+        }
+
+
+        .cards {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(200px, 1fr));
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .card {
+
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.08);
+        }
+
+
+        .card-title {
+
+            color: #6b7280;
+
+            font-size: 14px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .card-value {
+
+            font-size: 32px;
+
+            font-weight: bold;
+
+            margin-bottom: 6px;
+        }
+
+
+        .card-subtitle {
+
+            color: #16a34a;
+
+            font-size: 13px;
+        }
+
+
+        .section {
+
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 22px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.08);
+        }
+
+
+        .section h2 {
+
+            margin-top: 0;
+
+            font-size: 20px;
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+
+        th {
+
+            text-align: left;
+
+            background: #f8fafc;
+
+            padding: 12px;
+
+            font-size: 13px;
+
+            color: #475569;
+        }
+
+
+        td {
+
+            padding: 12px;
+
+            border-top: 1px solid #e5e7eb;
+
+            font-size: 14px;
+        }
+
+
+        .badge {
+
+            display: inline-block;
+
+            padding: 5px 10px;
+
+            border-radius: 999px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+
+        .green {
+
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+
+        .yellow {
+
+            background: #fef3c7;
+
+            color: #92400e;
+        }
+
+
+        .red {
+
+            background: #fee2e2;
+
+            color: #991b1b;
+        }
+
+
+        .footer {
+
+            text-align: center;
+
+            color: #64748b;
+
+            padding: 20px;
+
+            font-size: 13px;
+        }
+
+
+        .error {
+
+            color: #b91c1c;
+
+            background: #fee2e2;
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+        }
+
+
+        @media (max-width: 700px) {
+
+            .container {
+                padding: 12px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th,
+            td {
+                padding: 8px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <h1>🚀 Enterprise AKS Platform</h1>
+
+    <p>
+        Cloud & Kubernetes Health Dashboard
+    </p>
+
+</div>
+
+
+<div class="container">
+
+
+    {% if overall_status == "Healthy" %}
+
+    <div class="status">
+
+        🟢 <strong>All Systems Operational</strong>
+
+        <br>
+
+        Enterprise AKS Platform is running normally.
+
+    </div>
+
+    {% elif overall_status == "Degraded" %}
+
+    <div class="status degraded">
+
+        🟡 <strong>System Degraded</strong>
+
+        <br>
+
+        One or more Kubernetes resources require attention.
+
+    </div>
+
+    {% else %}
+
+    <div class="status unavailable">
+
+        🔴 <strong>Dashboard Unavailable</strong>
+
+        <br>
+
+        Unable to retrieve Kubernetes information.
+
+    </div>
+
+    {% endif %}
+
+
+    {% if error %}
+
+    <div class="error">
+
+        <strong>Kubernetes API Error:</strong>
+
+        {{ error }}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         SUMMARY
+         ===================================================== -->
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Kubernetes Nodes
+            </div>
+
+            <div class="card-value">
+                {{ node_count }}
+            </div>
+
+            <div class="card-subtitle">
+                {{ ready_node_count }} Ready
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Kubernetes Pods
+            </div>
+
+            <div class="card-value">
+                {{ pod_count }}
+            </div>
+
+            <div class="card-subtitle">
+                {{ running_pod_count }} Running
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Deployments
+            </div>
+
+            <div class="card-value">
+                {{ deployment_count }}
+            </div>
+
+            <div class="card-subtitle">
+                {{ healthy_deployment_count }} Healthy
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Services
+            </div>
+
+            <div class="card-value">
+                {{ service_count }}
+            </div>
+
+            <div class="card-subtitle">
+                Kubernetes Services
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Ingress
+            </div>
+
+            <div class="card-value">
+                {{ ingress_count }}
+            </div>
+
+            <div class="card-subtitle">
+                Active Routes
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         NODES
+         ===================================================== -->
+
+    <div class="section">
+
+        <h2>🖥️ AKS Nodes</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Kubernetes Version</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for node in nodes %}
+
+                <tr>
+
+                    <td>{{ node.name }}</td>
+
+                    <td>
+
+                        {% if node.status == "Ready" %}
+
+                        <span class="badge green">
+                            ● Ready
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge red">
+                            ● {{ node.status }}
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        {{ node.version }}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- =====================================================
+         PODS
+         ===================================================== -->
+
+    <div class="section">
+
+        <h2>📦 Kubernetes Pods</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Pod</th>
+                    <th>Namespace</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for pod in pods %}
+
+                <tr>
+
+                    <td>
+                        {{ pod.name }}
+                    </td>
+
+                    <td>
+                        {{ pod.namespace }}
+                    </td>
+
+                    <td>
+
+                        {% if pod.status == "Running" %}
+
+                        <span class="badge green">
+                            ● Running
+                        </span>
+
+                        {% elif pod.status == "Succeeded" %}
+
+                        <span class="badge green">
+                            ● Succeeded
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge yellow">
+                            ● {{ pod.status }}
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- =====================================================
+         DEPLOYMENTS
+         ===================================================== -->
+
+    <div class="section">
+
+        <h2>🚀 Deployments</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Name</th>
+                    <th>Namespace</th>
+                    <th>Ready</th>
+                    <th>Desired</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for deployment in deployments %}
+
+                <tr>
+
+                    <td>
+                        {{ deployment.name }}
+                    </td>
+
+                    <td>
+                        {{ deployment.namespace }}
+                    </td>
+
+                    <td>
+                        {{ deployment.ready }}
+                    </td>
+
+                    <td>
+                        {{ deployment.desired }}
+                    </td>
+
+                    <td>
+
+                        {% if deployment.ready == deployment.desired %}
+
+                        <span class="badge green">
+                            ● Healthy
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge red">
+                            ● Degraded
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- =====================================================
+         SERVICES
+         ===================================================== -->
+
+    <div class="section">
+
+        <h2>🌐 Kubernetes Services</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Name</th>
+                    <th>Namespace</th>
+                    <th>Type</th>
+                    <th>Cluster IP</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for service in services %}
+
+                <tr>
+
+                    <td>
+                        {{ service.name }}
+                    </td>
+
+                    <td>
+                        {{ service.namespace }}
+                    </td>
+
+                    <td>
+                        {{ service.type }}
+                    </td>
+
+                    <td>
+                        {{ service.cluster_ip }}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- =====================================================
+         INGRESS
+         ===================================================== -->
+
+    <div class="section">
+
+        <h2>🔀 Ingress</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Name</th>
+                    <th>Namespace</th>
+                    <th>Address</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for ingress in ingresses %}
+
+                <tr>
+
+                    <td>
+                        {{ ingress.name }}
+                    </td>
+
+                    <td>
+                        {{ ingress.namespace }}
+                    </td>
+
+                    <td>
+                        {{ ingress.address }}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <div class="footer">
+
+        Enterprise AKS Platform
+        |
+        Version {{ version }}
+        |
+        Last refresh: {{ timestamp }}
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>
