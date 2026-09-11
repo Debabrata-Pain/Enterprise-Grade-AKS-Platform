@@ -12,11 +12,11 @@ resource "kubernetes_manifest" "nginx_ingress_controller" {
       ingressClassName     = "webapprouting.kubernetes.azure.com"
 
       loadBalancerAnnotations = {
-        "service.beta.kubernetes.io/azure-load-balancer-internal" = "false"
+        "service.beta.kubernetes.io/azure-load-balancer-internal"       = "false"
+        "service.beta.kubernetes.io/azure-pip-name"                     = azurerm_public_ip.aks_ingress.name
+        "service.beta.kubernetes.io/azure-load-balancer-resource-group" = azurerm_public_ip.aks_ingress.resource_group_name
 
-        "service.beta.kubernetes.io/azure-pip-name" = azurerm_public_ip.aks_ingress.name
-
-        "service.beta.kubernetes.io/azure-load-balancer-resource-group" = module.aks_rg.resource_group_name
+        "service.beta.kubernetes.io/azure-disable-load-balancer-floating-ip" = "true"
       }
     }
   }
