@@ -1,22 +1,26 @@
 apiVersion: networking.k8s.io/v1
-
 kind: Ingress
-
 metadata:
   name: enterprise-flask
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
 
 spec:
   ingressClassName: webapprouting.kubernetes.azure.com
 
-  rules:
-  - host : debabrata-pain.hs.vc
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
+  tls:
+    - hosts:
+        - debabrata-pain.hs.vc
+      secretName: enterprise-flask-tls
 
-        backend:
-          service:
-            name: enterprise-flask
-            port:
-              number: 80
+  rules:
+    - host: debabrata-pain.hs.vc
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: enterprise-flask
+                port:
+                  number: 80

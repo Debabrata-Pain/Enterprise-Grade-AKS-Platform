@@ -17,3 +17,8 @@ variable "ado_acr_service_principal_object_id" {
   description = "Object ID of the service principal used by the Azure DevOps ACR service connection"
   type        = string
 }
+
+variable "letsencrypt_email" {
+  description = "Email address used for Let's Encrypt ACME registration"
+  type        = string
+}
