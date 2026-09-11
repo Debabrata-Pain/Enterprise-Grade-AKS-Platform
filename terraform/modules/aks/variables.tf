@@ -56,3 +56,9 @@ variable "system_node_min_count" {
 variable "system_node_max_count" {
   default = 5
 }
+
+variable "ingress_public_ip_name" {
+  description = "Name of the Azure Public IP used by the managed NGINX ingress controller"
+  type        = string
+  default     = null
+}

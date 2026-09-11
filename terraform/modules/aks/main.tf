@@ -20,7 +20,7 @@ resource "azurerm_kubernetes_cluster" "this" {
   web_app_routing {
     dns_zone_ids = []
 
-    default_nginx_controller = "External"
+    default_nginx_controller = "AnnotationControlled"
   }
 
   azure_policy_enabled = true

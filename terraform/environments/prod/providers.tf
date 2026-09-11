@@ -1,7 +1,27 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 4.0"
+    }
+
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.38"
+    }
+  }
+}
+
 provider "azurerm" {
   features {}
-
   subscription_id = var.subscription_id
 }
 
 data "azurerm_client_config" "current" {}
+
+provider "kubernetes" {
+  host                   = module.aks.host
+  client_certificate     = base64decode(module.aks.client_certificate)
+  client_key             = base64decode(module.aks.client_key)
+  cluster_ca_certificate = base64decode(module.aks.cluster_ca_certificate)
+}

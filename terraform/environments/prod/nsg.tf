@@ -26,17 +26,17 @@ resource "azurerm_subnet_network_security_group_association" "aks_user" {
 
 resource "azurerm_network_security_rule" "aks_ingress_http" {
 
-  name                        = "Allow-HTTP-Ingress"
-  priority                    = 100
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "Tcp"
+  name      = "Allow-HTTP-Ingress"
+  priority  = 100
+  direction = "Inbound"
+  access    = "Allow"
+  protocol  = "Tcp"
 
-  source_port_range           = "*"
-  destination_port_range      = "80"
+  source_port_range      = "*"
+  destination_port_range = "80"
 
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
+  source_address_prefix      = "*"
+  destination_address_prefix = "*"
 
   resource_group_name         = module.network_rg.resource_group_name
   network_security_group_name = module.aks_nsg.name

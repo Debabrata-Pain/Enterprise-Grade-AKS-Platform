@@ -19,6 +19,8 @@ module "aks" {
 
   log_analytics_workspace_id = module.log_analytics.id
 
+  ingress_public_ip_name = azurerm_public_ip.aks_ingress.name
+
   system_node_count = 2
 
   system_vm_size = "Standard_B2s"
