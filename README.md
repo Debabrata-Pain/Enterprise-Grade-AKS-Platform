@@ -399,6 +399,7 @@ Azure | Terraform | Kubernetes | Docker | Azure DevOps
 ### Running Application
 
 ![Flask UI](docs/screenshots/15-application-running.png)
+---
 
 ### Custom Domain & HTTPS Dashboard
 
@@ -410,4 +411,4 @@ using a static Azure Public IP and a custom domain.
 The dashboard is secured using TLS certificates issued and managed by
 cert-manager with Let's Encrypt.
 
-![Enterprise AKS Platform Dashboard](docs/screenshots/dashboard.png)
+![Enterprise AKS Platform Dashboard](docs/screenshots/16-Custom-Domain-&-HTTPS-Dashboard)
