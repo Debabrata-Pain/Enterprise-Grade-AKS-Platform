@@ -412,3 +412,4 @@ The dashboard is secured using TLS certificates issued and managed by
 cert-manager with Let's Encrypt.
 
 ![Enterprise AKS Platform Dashboard](docs/screenshots/16-custom-domain-https-dashboard.png)
+
