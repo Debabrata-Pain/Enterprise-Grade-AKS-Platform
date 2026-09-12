@@ -399,3 +399,15 @@ Azure | Terraform | Kubernetes | Docker | Azure DevOps
 ### Running Application
 
 ![Flask UI](docs/screenshots/15-application-running.png)
+
+### Custom Domain & HTTPS Dashboard
+
+The deployed application is exposed through the AKS managed NGINX Ingress Controller
+using a static Azure Public IP and a custom domain.
+
+**Custom Domain:** `https://debabrata-pain.hs.vc`
+
+The dashboard is secured using TLS certificates issued and managed by
+cert-manager with Let's Encrypt.
+
+![Enterprise AKS Platform Dashboard](docs/screenshots/dashboard.png)
